@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 
 const noteSchema = new mongoose.Schema({
     title: String,
-    body: String
-});
+    content: String
+},{timestamps: true});
 
 const note = mongoose.model('note', noteSchema);
 

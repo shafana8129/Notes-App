@@ -5,19 +5,19 @@ const app = express();
 
 app.get('/get-all-notes', async (req, res) => {
     // To get all notes
-    const allNotes = await note.find();
+    const allNotes = await note.find().sort({createdAt: -1});
     res.json({ allNotes });
 });
 
 app.post('/add-note', async (req, res) => {
     // To create new note
-    const { title, body } = req.body;
-    if (!title || !body) {
+    const { title, content } = req.body;
+    if (!title || !content) {
         res.json({ message: 'Reqired title and body' });
     } else {
         const newNote = new note({
             title,
-            body
+            content
         });
         await newNote.save();
         res.json({ newNote });
@@ -28,11 +28,11 @@ app.patch('/edit-note/:noteId', async (req, res) => {
     // To edit a note
     try {
         const noteId = req.params.noteId;
-        const { title, body } = req.body;
-        if (!noteId || !title || !body) {
+        const { title, content } = req.body;
+        if (!noteId || !title || !content) {
             res.json({ message: 'All feilds required'});
         } else {
-            const updatedNote = await note.findByIdAndUpdate(noteId, { $set: { title, body } }, { new: true });
+            const updatedNote = await note.findByIdAndUpdate(noteId, { $set: { title, content } }, { new: true });
             res.json({ message: "Note updated successfully", updatedNote });
         }
     } catch (error) {
