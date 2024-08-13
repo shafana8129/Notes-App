@@ -1,5 +1,5 @@
 import express from "express";
-import { note } from "../models/notes-model.js";
+import note from "../models/notes-model.js";
 
 const app = express();
 
@@ -7,6 +7,12 @@ app.get('/get-all-notes', async (req, res) => {
     // To get all notes
     const allNotes = await note.find().sort({createdAt: -1});
     res.json({ allNotes });
+});
+app.get('/get-note/:noteId', async (req, res) => {
+    // To get all notes
+    const id = req.params.noteId
+    const oneNote = await note.findById({_id: id})
+    res.json({ oneNote });
 });
 
 app.post('/add-note', async (req, res) => {
